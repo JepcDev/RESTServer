@@ -1,13 +1,19 @@
 
-require('dotenv').config();d
+//transformar todo lo que tenemos aqui en una clase
+require('dotenv').config();
 
-const express = require('express')
-const app = express()
+const Server = require('./models/server');
 
-app.get('/', function(req, res) {
-  res.send('Hello World')
-});
+const server = new Server();
 
-app.listen(process.env.PORT, ()=> {
-  console.log('Servidor corriendo en el puerto: ', process.env.PORT);
-});
+// const express = require('express')
+// const app = express()
+
+// app.get('/', function(req, res) {
+//   res.send('Hello World')
+// });
+
+// app.listen(process.env.PORT, ()=> {
+//   console.log('Servidor corriendo en el puerto: ', process.env.PORT);
+// });
+server.listen();
