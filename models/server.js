@@ -24,6 +24,11 @@ class Server {
 
     // CORS
     this.app.use( cors() );
+
+    //Lectura y parse del body
+    //cualquier informacion que venga de un post put delete la va intentar serializar a un formato json
+    this.app.use( express.json() );
+
     // Directorio publico
     this.app.use( express.static('public') );
 
