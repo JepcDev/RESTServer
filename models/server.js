@@ -1,5 +1,7 @@
 
-const express = require('express')
+const express = require('express');
+
+const cors = require('cors');
 
 class Server {
 
@@ -9,7 +11,7 @@ class Server {
     this.app = express();
     this.port = process.env.PORT;
 
-    //Middlewares no son mas que funciones que van a añadirle otora funcionalidad a mi webserver es un metodo o funcion  que siempre se va a ejecutarse cuando levantemos nuestro servidor
+    //Middlewares no son mas que funciones que van a añadirle otra funcionalidad a mi webserver es un metodo o funcion  que siempre se va a ejecutarse cuando levantemos nuestro servidor
     this.middlewares();
 
     //Rutas de mi aplicacion
@@ -18,6 +20,9 @@ class Server {
   }
 
   middlewares() {
+
+    // CORS
+    this.app.use( cors() );
     // Directorio publico
     this.app.use( express.static('public') );
 
@@ -28,8 +33,7 @@ class Server {
     this.app.get('/api', (req, res) => {
       // usualmente lo que se manda es un objeto en este caso json
       // res.render('Hello World');
-      res.json({
-        ok: true,
+      res.status(404).json({
         msg: 'get API'
       });
     });
@@ -38,17 +42,16 @@ class Server {
       // usualmente lo que se manda es un objeto en este caso json
       // res.render('Hello World');
       res.json({
-        ok: true,
-        msg: 'get API'
+        msg: 'put API'
       });
     });
 
+    // mayormente se usa para crear nuevos recursos
     this.app.post('/api', (req, res) => {
       // usualmente lo que se manda es un objeto en este caso json
       // res.render('Hello World');
       res.json({
-        ok: true,
-        msg: 'get API'
+        msg: 'post API'
       });
     });
 
@@ -56,8 +59,7 @@ class Server {
       // usualmente lo que se manda es un objeto en este caso json
       // res.render('Hello World');
       res.json({
-        ok: true,
-        msg: 'get API'
+        msg: 'delete API'
       });
     });
 
@@ -65,8 +67,7 @@ class Server {
       // usualmente lo que se manda es un objeto en este caso json
       // res.render('Hello World');
       res.json({
-        ok: true,
-        msg: 'get API'
+        msg: 'patch API'
       });
     });
   }
