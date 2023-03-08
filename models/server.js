@@ -24,8 +24,50 @@ class Server {
   }
 
   routes() {
+    // get cuando se solicita mediante una peticion get '/api' a ese path se envia el hello world
     this.app.get('/api', (req, res) => {
-      res.render('Hello World');
+      // usualmente lo que se manda es un objeto en este caso json
+      // res.render('Hello World');
+      res.json({
+        ok: true,
+        msg: 'get API'
+      });
+    });
+
+    this.app.put('/api', (req, res) => {
+      // usualmente lo que se manda es un objeto en este caso json
+      // res.render('Hello World');
+      res.json({
+        ok: true,
+        msg: 'get API'
+      });
+    });
+
+    this.app.post('/api', (req, res) => {
+      // usualmente lo que se manda es un objeto en este caso json
+      // res.render('Hello World');
+      res.json({
+        ok: true,
+        msg: 'get API'
+      });
+    });
+
+    this.app.delete('/api', (req, res) => {
+      // usualmente lo que se manda es un objeto en este caso json
+      // res.render('Hello World');
+      res.json({
+        ok: true,
+        msg: 'get API'
+      });
+    });
+
+    this.app.patch('/api', (req, res) => {
+      // usualmente lo que se manda es un objeto en este caso json
+      // res.render('Hello World');
+      res.json({
+        ok: true,
+        msg: 'get API'
+      });
     });
   }
 

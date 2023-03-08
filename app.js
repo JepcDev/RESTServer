@@ -1,9 +1,9 @@
 
 //transformar todo lo que tenemos aqui en una clase
 require('dotenv').config();
-
 const Server = require('./models/server');
 
+//instancia del servidor
 const server = new Server();
 
 // const express = require('express')
