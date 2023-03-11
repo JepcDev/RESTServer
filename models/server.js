@@ -27,6 +27,7 @@ class Server {
 
     //Lectura y parse del body
     //cualquier informacion que venga de un post put delete la va intentar serializar a un formato json
+    //es un middleware para decirle a express que la informacion que viene en el backend o asia el backend mediante una peticion POST,PUT,DELETE va a venir en dormato json
     this.app.use( express.json() );
 
     // Directorio publico

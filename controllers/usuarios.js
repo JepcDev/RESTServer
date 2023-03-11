@@ -1,21 +1,44 @@
 
-const { response } = require('express');
+const { response, request } = require('express');
 
 
 //es o son funciones comun y corriente
-const usuarioGet = (req, res = response) => {
+const usuarioGet = (req = request, res = response) => {
+
+  // captura los query params
+  // const queryParams = req.query;
+  //postman http://localhost:8080/api/usuarios?q=hola&nombre=jepc&apikey=1234567
+  //postman http://localhost:8080/api/usuarios?q=hola&nombre=jepc&page=10&limit=5 //paginacion
+  // const {q,nombre= 'no name',apik,page = 1, limit} = req.query; //valores por defecto por si el usuario no manda estos valores en los query o paramas
+  const {q,nombre,apikey} = req.query;
+
   // usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
-  res.status(200).json({
-    msg: 'get API - controlador'
+  // res.status(200).json({
+  res.json({
+    msg: 'get API - controlador',
+    q,
+    nombre,
+    apikey
   });
 }
 
 const usuarioPut = (req, res = response) => {
+  //esto captura el id o parametro que esta viniendo o mandando el usuario en los parametros
+  // const id = req.params.id; postman- PUT -> http://localhost:8080/api/usuarios/10
+  // body/json esto es lo que se envia en el cuerpo de la peticion
+  // {
+  //   "nombre": "Jepc",
+  //   "edad": 27,
+  //   "id": "123",
+  //   "apellido": "pc"
+  // }
+  const { id } = req.params;
   // usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
   res.json({
-    msg: 'put API - controlador'
+    msg: 'put API - controlador',
+    id
   });
 }
 

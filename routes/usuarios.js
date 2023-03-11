@@ -20,7 +20,15 @@ router.get('/', usuarioGet );
 // usaurioGet no estamos ejecuntando la funcion "usaurioGet()" sino solo mandando la referencia
 
 //DEV PUT
-router.put('/', usuarioPut );
+// capturando parametros en la peticion
+// router.put('/', usuarioPut );
+// este :id ahora ya esta configurado en express inscluso express ya lo parsea y lo entrega en una propiedad del objeto request 
+// postman- PUT -> http://localhost:8080/api/usuarios/10
+//query params ,son considerados opcionales ?q=hola&nombre=fernando&apikey=1234567
+//http://localhost:8080/api/usuarios?q=hola&nombre=fernando&apikey=1234567
+
+router.put('/:id', usuarioPut );
+//lo que esta despues de la primer "," se lo movio a controllers
 // router.put('/', (req, res) => {
 //   // usualmente lo que se manda es un objeto en este caso json
 //   // res.render('Hello World');
