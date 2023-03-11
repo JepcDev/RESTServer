@@ -9,7 +9,7 @@ class Server {
   constructor() {
     //Lo que se hace aqui es crearme en mi servidor  una instancia que cuando se lanze el servidor se crea la aplicasion de express como una propiedad de la clase de mi servidor
     this.app = express();
-    this.port = process.env.PORT;
+    this.port = process.env.PORT || 3000;
     this.usuariosPath = '/api/usuarios';
 
     //Middlewares no son mas que funciones que van a añadirle otra funcionalidad a mi webserver es un metodo o funcion  que siempre se va a ejecutarse cuando levantemos nuestro servidor
