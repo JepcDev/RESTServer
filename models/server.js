@@ -2,6 +2,7 @@
 const express = require('express');
 
 const cors = require('cors');
+const { dbConnection } = require('../database/config');
 
 class Server {
 
@@ -12,12 +13,20 @@ class Server {
     this.port = process.env.PORT;
     this.usuariosPath = '/api/usuarios';
 
+    // conectar a base de datos
+    // se lo llama justo cuando se esta creando la instancia del servidor
+    this.conectarDB();
+
     //Middlewares no son mas que funciones que van a añadirle otra funcionalidad a mi webserver es un metodo o funcion  que siempre se va a ejecutarse cuando levantemos nuestro servidor
     this.middlewares();
 
     //Rutas de mi aplicacion
     //esto dispara el metodo routes y eso configura mis rutas
     this.routes();
+  }
+
+  async conectarDB() {
+    await dbConnection()
   }
 
   middlewares() {
