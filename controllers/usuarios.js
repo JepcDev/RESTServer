@@ -1,8 +1,13 @@
 
 const { response, request } = require('express');
 
+// se pone en mayusculas U eso es por que esto me va a pertimir crearme instancias de mi modelo
+// es un estandar
+const Usuario = require('../models/usuarios');
+
 
 //es o son funciones comun y corriente
+// aqui es donde insertaremos en la base de datos por que aqui se va a recibir la informacion y es el manejador de una ruta post
 const usuarioGet = (req = request, res = response) => {
 
   // captura los query params
@@ -42,18 +47,28 @@ const usuarioPut = (req, res = response) => {
   });
 }
 
-const usuarioPost = (req, res = response) => {
+const usuarioPost = async(req, res = response) => {
   // usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
 
   //escencialmente se va a necesitar hacer una limpieza asegurarse que no haya scripts o una inyeccion de algo
   //es muy comun que se desestructure del body solo lo que se necesita
-  const { nombre, edad } = req.body;
+  // const { nombre, edad } = req.body;
+  // toda la informacion del body se esta recibiendo en esta request
+  const body = req.body;
+  // los elementos que se reciban en el body sera enviado al modelo usuario
+  // los nuevos campos que se manden en la request y como no estan definidos en el modelo nose van a grabar y mongoose lo va a ignorar por nosostros
+  const usuario = new Usuario( body );
+
+  // graba en la DB , await para que espere esa grabacion aunque si esto falla actualmente va a romper o botar mi aplicasion
+  await usuario.save();
+
   res.json({
     msg: 'post API - controlador',
-    nombre,
-    edad
+    // nombre,
+    // edad
     // body
+    usuario
   });
 }
 

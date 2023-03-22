@@ -8,18 +8,19 @@
 //   estado: false, //no se elimanara de la base de datos solo se ponda false como inactivo
 //   google: false//si el usuario fue creado por google true y si fue creado por mi sistema de autencacion false
 // }
+// mongo a diferencia de una base de datos relacional se graba en objetos como se ve arriba(documentos) y estos documentos se graban dentro de colecciones
 
 const { Schema, model } = require('mongoose');
 
 // esto es un objeto literal
-const UsarioSchema = Schema({
-  nombre: {
+const UsuarioSchema = Schema({
+  name: {
     type: String,
     // la 1er posicion es de si es requerido y la 2da es un mensaje de error en caso de que no sea enviado
     // aunque vamos hacer nuestra propias validaciones por que no se quiere llegar a la BD con informacion herronea , que la base trabaje con informacion veridica
     required: [true, 'El nombre es obligatorio']
   },
-  correo: {
+  email: {
     type: String,
     required: [true, 'El correo es obligatorio'],
     unique: true,//mongo no va permitir insertar correos duplicados
@@ -31,12 +32,12 @@ const UsarioSchema = Schema({
   img: {
     type: String,
   },
-  rol: {
+  role: {
     type: String,
     required: true,
     enum: ['ADMIN_ROLE', 'USER_ROLE'],///valida que el rol solo sea de estos dos tipos
   },
-  estado: {
+  state: {
     type: Boolean,
     default: true
   },
@@ -48,4 +49,4 @@ const UsarioSchema = Schema({
 
 
 // pide el nombre de no solo del modelo que esto ayudara para ponerle el nombre a la misma coleccion
-module.exports = model( 'Usuarios' );
+module.exports = model( 'Usuarios', UsuarioSchema );
