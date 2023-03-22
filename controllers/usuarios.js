@@ -1,5 +1,6 @@
 
 const { response, request } = require('express');
+const bcryptjs = require('bcryptjs');
 
 // se pone en mayusculas U eso es por que esto me va a pertimir crearme instancias de mi modelo
 // es un estandar
@@ -55,16 +56,28 @@ const usuarioPost = async(req, res = response) => {
   //es muy comun que se desestructure del body solo lo que se necesita
   // const { nombre, edad } = req.body;
   // toda la informacion del body se esta recibiendo en esta request
-  const body = req.body;
+  // const body = req.body;
+  const { name, email, password, role} = req.body;
+  // si se tubiera mas campos unos 1000 o mas se usaria asi y se quisiera obpener al especifico en este caso google se pondria asi
+  // y el resto se mandaria como argumento al modelo Usuario
+  // const { google, ...resto} = req.body;
   // los elementos que se reciban en el body sera enviado al modelo usuario
   // los nuevos campos que se manden en la request y como no estan definidos en el modelo nose van a grabar y mongoose lo va a ignorar por nosostros
-  const usuario = new Usuario( body );
+  // const usuario = new Usuario( body );
+  const usuario = new Usuario({ name, email, password, role });
 
+  // verificar si el correo existe
+
+  // Encriptar la contraseña, hacer el hash de la contraseña, salt es el numero de vueltas que va tener la encriptacion de la contraseña y tiene por defecto 10
+  const salt = bcryptjs.genSaltSync();
+  // El hash es para encriptarlo en una sola via
+  usuario.password = bcryptjs.hashSync(password, salt);
+  // Guardar en base de datos
   // graba en la DB , await para que espere esa grabacion aunque si esto falla actualmente va a romper o botar mi aplicasion
   await usuario.save();
 
   res.json({
-    msg: 'post API - controlador',
+    // msg: 'post API - controlador',
     // nombre,
     // edad
     // body
