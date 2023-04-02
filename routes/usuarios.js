@@ -1,6 +1,7 @@
 // rutas relacionadas con el usuario
 // Router me permite crearme una llamda de mi router
 const {Router} = require('express');
+const { check } = require('express-validator');
 
 const { usuarioGet, usuarioPut, usuarioPost, usuarioDelete, usuarioPatch } = require('../controllers/usuarios');
 
@@ -39,7 +40,13 @@ router.put('/:id', usuarioPut );
 
 //DEV POST
 // mayormente se usa para crear nuevos recursos
-router.post('/', usuarioPost);
+// antes de que se ejecute usuarioPost yo puedo hacer las validaciones y si se pasa todas las validaciones recien llamo a usuarioPost
+// si algo falla en algun middleware no se dispara la ruta
+// check es un middleware en el cual puedo especificar que campo del body necesito revisar
+// junta todos los errores y cuando se ejecute el usuarioPost o la ruta o el controlador usuarioPost podemos ver los errores
+router.post('/',[
+  check('email', 'El correo no es valido').isEmail(),
+], usuarioPost);
 // router.post('/', (req, res) => {
 //   // usualmente lo que se manda es un objeto en este caso json
 //   // res.render('Hello World');

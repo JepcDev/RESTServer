@@ -48,5 +48,6 @@ const UsuarioSchema = Schema({
 });
 
 
-// pide el nombre de no solo del modelo que esto ayudara para ponerle el nombre a la misma coleccion
-module.exports = model( 'Usuarios', UsuarioSchema );
+// pide el nombre del modelo y que esto ayudara para ponerle el nombre a la misma coleccion
+// tambien esta el esquema del usuario
+module.exports = model( 'Usuario', UsuarioSchema );

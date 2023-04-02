@@ -1,6 +1,7 @@
 
 const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
+const { validationResult } = require('express-validator');
 
 // se pone en mayusculas U eso es por que esto me va a pertimir crearme instancias de mi modelo
 // es un estandar
@@ -48,25 +49,39 @@ const usuarioPut = (req, res = response) => {
   });
 }
 
+// Validar todos los endpoints de la manera mas minusiosa posible
 const usuarioPost = async(req, res = response) => {
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json(errors);
+  }
   // usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
 
   //escencialmente se va a necesitar hacer una limpieza asegurarse que no haya scripts o una inyeccion de algo
   //es muy comun que se desestructure del body solo lo que se necesita
   // const { nombre, edad } = req.body;
-  // toda la informacion del body se esta recibiendo en esta request
+  // toda la informacion del body se esta recibiendo en esta request req
   // const body = req.body;
   const { name, email, password, role} = req.body;
   // si se tubiera mas campos unos 1000 o mas se usaria asi y se quisiera obpener al especifico en este caso google se pondria asi
   // y el resto se mandaria como argumento al modelo Usuario
   // const { google, ...resto} = req.body;
+  // const usuario = new Usuario({ resto});
   // los elementos que se reciban en el body sera enviado al modelo usuario
   // los nuevos campos que se manden en la request y como no estan definidos en el modelo nose van a grabar y mongoose lo va a ignorar por nosostros
   // const usuario = new Usuario( body );
   const usuario = new Usuario({ name, email, password, role });
 
   // verificar si el correo existe
+  //Usuario.findOne({ correo:correo }) busca un objeto que sea igual al correo que recibo como argumento
+  const existeEmail = await Usuario.findOne({ email });
+  if (existeEmail) {
+    return res.status(400).json({
+      msg: 'El correo ya existe'
+    });
+  }
 
   // Encriptar la contraseña, hacer el hash de la contraseña, salt es el numero de vueltas que va tener la encriptacion de la contraseña y tiene por defecto 10
   const salt = bcryptjs.genSaltSync();
@@ -75,6 +90,8 @@ const usuarioPost = async(req, res = response) => {
   // Guardar en base de datos
   // graba en la DB , await para que espere esa grabacion aunque si esto falla actualmente va a romper o botar mi aplicasion
   await usuario.save();
+  // funcionaria si fuera un objeto literal pero en cambio es un modelo de mongo
+  // delete usuario.password;
 
   res.json({
     // msg: 'post API - controlador',
