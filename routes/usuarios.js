@@ -2,6 +2,7 @@
 // Router me permite crearme una llamda de mi router
 const {Router} = require('express');
 const { check } = require('express-validator');
+const Role = require('../models/role');
 
 const { validateFields } = require('../middlewares/validate-fields');
 
@@ -52,7 +53,13 @@ router.post('/',[
   check('name', 'El nombre es obligatorio').not().isEmpty(),
   check('password', 'El password debe contener mas de 6 letras').isLength({min:6}),
   check('email', 'El correo no es valido').isEmail(),
-  check('role', 'No es un rol valido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
+  // check('role', 'No es un rol valido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
+  check('role').custom( async(role='')=>{
+    const existeRol = await Role.findOne({role});
+    if(!existeRol){
+      throw new Error(`El rol ${role} no existe`)
+    }
+  }),
   // validateFields este middleware se pone despues de que se hizo todas las validaciones del check porque cunado ya tengo todas las validaciones del check echas quiero ejecutar el middleware que va a rebizar los errores de cada uno de estos cheks
   // si este middleware pasa entonces se ejecuta el controlador
   validateFields

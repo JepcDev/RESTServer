@@ -35,7 +35,7 @@ const UsuarioSchema = Schema({
   role: {
     type: String,
     required: true,
-    enum: ['ADMIN_ROLE', 'USER_ROLE'],///valida que el rol solo sea de estos dos tipos
+    //enum: ['ADMIN_ROLE', 'USER_ROLE'],///valida que el rol solo sea de estos dos tipos
   },
   state: {
     type: Boolean,
