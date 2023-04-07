@@ -1,7 +1,6 @@
 
 const { response, request } = require('express');
 const bcryptjs = require('bcryptjs');
-const { validationResult } = require('express-validator');
 
 // se pone en mayusculas U eso es por que esto me va a pertimir crearme instancias de mi modelo
 // es un estandar
@@ -52,10 +51,11 @@ const usuarioPut = (req, res = response) => {
 // Validar todos los endpoints de la manera mas minusiosa posible
 const usuarioPost = async(req, res = response) => {
 
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json(errors);
-  }
+  // crear un middlewarepara manejar esto y no tener que estar copiando y pegando en todos lados donde se necesite
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   return res.status(400).json(errors);
+  // }
   // usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
 
