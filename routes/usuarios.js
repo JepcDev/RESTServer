@@ -2,9 +2,10 @@
 // Router me permite crearme una llamda de mi router
 const {Router} = require('express');
 const { check } = require('express-validator');
-const Role = require('../models/role');
+// const Role = require('../models/role');
 
 const { validateFields } = require('../middlewares/validate-fields');
+const { esRoleValido } = require('../helpers/db_validators');
 
 const { usuarioGet, usuarioPut, usuarioPost, usuarioDelete, usuarioPatch } = require('../controllers/usuarios');
 
@@ -50,16 +51,22 @@ router.put('/:id', usuarioPut );
 // su es solo 1 middleware se pone sin el []
 router.post('/',[
   // El check va preparando los errores esta creanod en la request todos los errores que que estos middleware que voy a ir poniendo los va almacenando hay de tal manera que cuando lleguemos al usuariopost puedo confirmar eso
+  // check('campo que se va a evaluar', 'mensaj de error')
   check('name', 'El nombre es obligatorio').not().isEmpty(),
   check('password', 'El password debe contener mas de 6 letras').isLength({min:6}),
   check('email', 'El correo no es valido').isEmail(),
   // check('role', 'No es un rol valido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
-  check('role').custom( async(role='')=>{
-    const existeRol = await Role.findOne({role});
-    if(!existeRol){
-      throw new Error(`El rol ${role} no existe`)
-    }
-  }),
+  // con el custom le decimos que va ser una verficacion personalizada
+  // Custom recibe como argumento el valor que estoy evaluando del body "rol"
+  // check('role').custom( async(role='')=>{
+  //   const existeRol = await Role.findOne({role});
+  //   if(!existeRol){
+  //     throw new Error(`El rol ${role} no existe`)
+  //   }
+  // }),
+  // check('role').custom((role) => esRoleValido(role)),
+  // (role) => esRoleValido(role) cuando se tenga una funcion o un callback cuyo primer argumento "esRoleValido(role)" es el mismo argumento que estamos recibiendo "(role) =>" podemos obviar esta parte mandar unicamente la referencia a la funcion "esRoleValido" y auromaticamente el primer argumento que este emitiendo el custom va ser el 1er argumento que se le va a enviar a la funcion "esRoleValido"
+  check('role').custom( esRoleValido),
   // validateFields este middleware se pone despues de que se hizo todas las validaciones del check porque cunado ya tengo todas las validaciones del check echas quiero ejecutar el middleware que va a rebizar los errores de cada uno de estos cheks
   // si este middleware pasa entonces se ejecuta el controlador
   validateFields

@@ -47,6 +47,16 @@ const UsuarioSchema = Schema({
   },
 });
 
+// puedo sobre escribir metodos de mongoose
+// tiene que ser una funcion normal porque voy a usar el objetos "this" y una funcion de flecha mantiene a lo que apunta el "this" fuera de la misma , se necesita que aqui se tenga el this porque va hacer referencia a la instancia creada poreso tiene que ser una funcion normal
+// cuando se mande a llamar al toJSON se va a ejecutar esta funcion
+UsuarioSchema.methods.toJSON = function() {
+  // esto me va a general una instancia con sus valores repetidos como si fuera un objeto literal de javascript
+  // el resto de atributos o valores o argumentos se lo va a unificar en uno solo usando el operador Rest "...usuario"
+  const { __v, password, ...usuario } = this.toObject();
+  return usuario;
+}
+
 
 // pide el nombre del modelo y que esto ayudara para ponerle el nombre a la misma coleccion
 // tambien esta el esquema del usuario
