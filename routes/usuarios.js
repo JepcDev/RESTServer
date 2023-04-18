@@ -5,7 +5,7 @@ const { check } = require('express-validator');
 // const Role = require('../models/role');
 
 const { validateFields } = require('../middlewares/validate-fields');
-const { esRoleValido } = require('../helpers/db_validators');
+const { esRoleValido, emailExiste } = require('../helpers/db_validators');
 
 const { usuarioGet, usuarioPut, usuarioPost, usuarioDelete, usuarioPatch } = require('../controllers/usuarios');
 
@@ -55,6 +55,7 @@ router.post('/',[
   check('name', 'El nombre es obligatorio').not().isEmpty(),
   check('password', 'El password debe contener mas de 6 letras').isLength({min:6}),
   check('email', 'El correo no es valido').isEmail(),
+  check('email').custom(emailExiste),
   // check('role', 'No es un rol valido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
   // con el custom le decimos que va ser una verficacion personalizada
   // Custom recibe como argumento el valor que estoy evaluando del body "rol"

@@ -76,12 +76,12 @@ const usuarioPost = async(req, res = response) => {
 
   // verificar si el correo existe
   //Usuario.findOne({ correo:correo }) busca un objeto que sea igual al correo que recibo como argumento
-  const existeEmail = await Usuario.findOne({ email });
-  if (existeEmail) {
-    return res.status(400).json({
-      msg: 'El correo ya existe'
-    });
-  }
+  // const existeEmail = await Usuario.findOne({ email });
+  // if (existeEmail) {
+  //   return res.status(400).json({
+  //     msg: 'El correo ya existe'
+  //   });
+  // }
 
   // Encriptar la contraseña, hacer el hash de la contraseña, salt es el numero de vueltas que va tener la encriptacion de la contraseña y tiene por defecto 10
   const salt = bcryptjs.genSaltSync();
