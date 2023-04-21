@@ -29,7 +29,7 @@ const usuarioGet = (req = request, res = response) => {
   });
 }
 
-const usuarioPut = (req, res = response) => {
+const usuarioPut = async(req, res = response) => {
   //esto captura el id o parametro que esta viniendo o mandando el usuario en los parametros
   // const id = req.params.id; postman- PUT -> http://localhost:8080/api/usuarios/10
   // body/json esto es lo que se envia en el cuerpo de la peticion
@@ -40,11 +40,22 @@ const usuarioPut = (req, res = response) => {
   //   "apellido": "pc"
   // }
   const { id } = req.params;
-  // usualmente lo que se manda es un objeto en este caso json
+  // vamos a desestructurar informacion que viene en la "request.body" voy a extraer todo lo que no necesito o lo que voy a ocupar manipular o lo que no necesito que se grabe
+  // ...resto es el resto de la informacion que viene en el "request.body"
+  const {password, google,email, ...resto} = req.body;
+  //TODO validar contra base de datos
+  if (password) {
+    //encriptar la contraseña
+    const salt = bcryptjs.genSaltSync();
+    resto.password = bcryptjs.hashSync(password, salt);
+  }
+  const usuario = await Usuario.findByIdAndUpdate(id, resto);
+  // res.json usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
   res.json({
     msg: 'put API - controlador',
-    id
+    // id
+    usuario
   });
 }
 
