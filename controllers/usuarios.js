@@ -41,8 +41,8 @@ const usuarioPut = async(req, res = response) => {
   // }
   const { id } = req.params;
   // vamos a desestructurar informacion que viene en la "request.body" voy a extraer todo lo que no necesito o lo que voy a ocupar manipular o lo que no necesito que se grabe
-  // ...resto es el resto de la informacion que viene en el "request.body"
-  const {password, google,email, ...resto} = req.body;
+  // ...resto es el resto de la informacion que viene en el "request.body" es lo unico que se cambiara, los demas parametros se ignoran o excluyen o no se toman en cuenta a la hora de hacerla insercion en la db
+  const {_id, password, google,email, ...resto} = req.body;
   //TODO validar contra base de datos
   if (password) {
     //encriptar la contraseña

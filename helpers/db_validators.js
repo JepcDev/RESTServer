@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const Role = require('../models/role');
 const Usuario = require('../models/usuarios');
 
@@ -21,7 +22,29 @@ const emailExiste = async(email='') => {
   // }
 }
 
+const existeUsuarioPorId = async( id ) => {
+  // const existeUsuario = await Usuario.findById({id:id});
+  // const existeUsuario = await Usuario.findById(id);
+// if (!mongoose.Types.ObjectId.isValid(id)) {
+//   throw new Error(`This isn't a valid Mongoose ID`);
+// }
+
+//   const existeUsuario = await Usuario.findById({_id:id});//devuelve true si encuentra un id con el mismo valor en la db
+//   if(!existeUsuario){
+//     throw new Error(`El id: ${id} no existe`);
+//   }
+  if (mongoose.Types.ObjectId.isValid(id)) {
+    const existId = await Usuario.findById(id);
+    if (!existId) {
+      throw new Error(`El id  ${id}  no existe en la BD`);
+    }
+  }else{
+    throw new Error(`El id ${id} no es válido`);
+  }
+}
+
 module.exports = {
   esRoleValido,
-  emailExiste
+  emailExiste,
+  existeUsuarioPorId
 };

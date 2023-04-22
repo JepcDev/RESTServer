@@ -47,7 +47,8 @@ const UsuarioSchema = Schema({
   },
 });
 
-// puedo sobre escribir metodos de mongoose
+// Lo que hace este metodo o lo que hacemos al sobre escribir es borrar __v, password de la respuesta que se devuelve al usuario
+// puedo sobre escribir metodos de mongoose(findone) o crear metodos personalizados como validar correo
 // tiene que ser una funcion normal porque voy a usar el objetos "this" y una funcion de flecha mantiene a lo que apunta el "this" fuera de la misma , se necesita que aqui se tenga el this porque va hacer referencia a la instancia creada poreso tiene que ser una funcion normal
 // cuando se mande a llamar al toJSON se va a ejecutar esta funcion
 UsuarioSchema.methods.toJSON = function() {
