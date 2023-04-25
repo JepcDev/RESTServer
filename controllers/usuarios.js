@@ -6,29 +6,39 @@ const bcryptjs = require('bcryptjs');
 // es un estandar
 const Usuario = require('../models/usuarios');
 
-
+// DEV GET
 //es o son funciones comun y corriente
 // aqui es donde insertaremos en la base de datos por que aqui se va a recibir la informacion y es el manejador de una ruta post
-const usuarioGet = (req = request, res = response) => {
+const usuarioGet = async(req = request, res = response) => {
 
   // captura los query params
   // const queryParams = req.query;
   //postman http://localhost:8080/api/usuarios?q=hola&nombre=jepc&apikey=1234567
   //postman http://localhost:8080/api/usuarios?q=hola&nombre=jepc&page=10&limit=5 //paginacion
-  // const {q,nombre= 'no name',apik,page = 1, limit} = req.query; //valores por defecto por si el usuario no manda estos valores en los query o paramas
-  const {q,nombre,apikey} = req.query;
+  // const {q,nombre= 'no name',apikey,page = 1, limit} = req.query; //valores por defecto por si el usuario no manda estos valores en los query o paramas
+  // const {q,nombre,apikey} = req.query;
+  const { limite = 5, desde = 0  } = req.query;//limite = son los registros que se van a mostrar, desde = desde que requistro quiero que se muestren
+  const usuarios = await Usuario.find()
+    .skip(Number(desde))
+    .limit(Number(limite));
+    // .limit(2);
 
   // usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
   // res.status(200).json({
-  res.json({
-    msg: 'get API - controlador',
-    q,
-    nombre,
-    apikey
-  });
+  // res.json({
+  //   msg: 'get API - controlador',
+  //   q,
+  //   nombre,
+  //   apikey,
+  //   page,
+  //   limit
+  // });
+
+  res.json({usuarios});
 }
 
+// DEV PUT
 const usuarioPut = async(req, res = response) => {
   //esto captura el id o parametro que esta viniendo o mandando el usuario en los parametros
   // const id = req.params.id; postman- PUT -> http://localhost:8080/api/usuarios/10
@@ -52,11 +62,12 @@ const usuarioPut = async(req, res = response) => {
   const usuario = await Usuario.findByIdAndUpdate(id, resto);
   // res.json usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
-  res.json({
-    msg: 'put API - controlador',
-    // id
-    usuario
-  });
+  // res.json({
+  //   msg: 'put API - controlador',
+  //   // id
+  //   usuario
+  // });
+  res.json(usuario);
 }
 
 // Validar todos los endpoints de la manera mas minusiosa posible
