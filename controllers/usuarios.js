@@ -17,12 +17,28 @@ const usuarioGet = async(req = request, res = response) => {
   //postman http://localhost:8080/api/usuarios?q=hola&nombre=jepc&page=10&limit=5 //paginacion
   // const {q,nombre= 'no name',apikey,page = 1, limit} = req.query; //valores por defecto por si el usuario no manda estos valores en los query o paramas
   // const {q,nombre,apikey} = req.query;
+  // argumentos opcinales que vienen por el querty
   const { limite = 5, desde = 0  } = req.query;//limite = son los registros que se van a mostrar, desde = desde que requistro quiero que se muestren
-  const usuarios = await Usuario.find()
-    .skip(Number(desde))
-    .limit(Number(limite));
-    // .limit(2);
+  const query = {state: true}; //query o consulta que sirve para restringir la visualizacion de los usuarios con el "estado:true"
 
+  // el await es un codigo bloqueante es decir si no se termina de ejecutar esta instruccion no puede continuar con la proxima. es decor va a esperar la respuesta de esta instruccion que trae una respuesta de la base de datos
+  // promesas
+  // const usuarios = await Usuario.find(query)
+  //   .skip(Number(desde))
+  //   .limit(Number(limite));
+  //   // .limit(2);
+  // promesas
+  // const total = await Usuario.countDocuments(query);
+
+  // Promise.all() me permite enviar un arreglo con todas las promesas que quiero que se ejecuten
+  // const resp = await Promise.all([
+  // destructuracion de arreglos
+  const [total, usuarios] = await Promise.all([
+    Usuario.count(query),
+    Usuario.find(query)
+      .skip(Number(desde))
+      .limit(Number(limite))
+  ]);
   // usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
   // res.status(200).json({
@@ -34,8 +50,12 @@ const usuarioGet = async(req = request, res = response) => {
   //   page,
   //   limit
   // });
-
-  res.json({usuarios});
+  // se debe manejar con await por que si no se tubiera la respuesta de los anteriores instuciones o consulta a la base de datos no tendriamos respuesta para la peticiones
+  // el resultado se imprime en la respuesta
+  res.json({
+    total,
+    usuarios
+  });
 }
 
 // DEV PUT
