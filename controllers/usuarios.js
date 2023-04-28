@@ -152,6 +152,7 @@ const usuarioPost = async(req, res = response) => {
 const usuarioDelete = async(req, res = response) => {
   // usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
+  // parametro
   const { id } = req.params;
   // const usuario = await Usuario.findByIdAndDelete(id);
   const usuario = await Usuario.findByIdAndUpdate(id,{state:false});
