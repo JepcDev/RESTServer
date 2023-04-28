@@ -33,6 +33,8 @@ const usuarioGet = async(req = request, res = response) => {
   // Promise.all() me permite enviar un arreglo con todas las promesas que quiero que se ejecuten
   // const resp = await Promise.all([
   // destructuracion de arreglos
+  // skip sirve para decirle a mongo desde que documento o registro queremos ver
+  // limit le dice a mongo cuantos registros quiero que me muestre
   const [total, usuarios] = await Promise.all([
     Usuario.count(query),
     Usuario.find(query)
@@ -53,6 +55,7 @@ const usuarioGet = async(req = request, res = response) => {
   // se debe manejar con await por que si no se tubiera la respuesta de los anteriores instuciones o consulta a la base de datos no tendriamos respuesta para la peticiones
   // el resultado se imprime en la respuesta
   res.json({
+    // resp,
     total,
     usuarios
   });
@@ -90,6 +93,7 @@ const usuarioPut = async(req, res = response) => {
   res.json(usuario);
 }
 
+// DEV Post
 // Validar todos los endpoints de la manera mas minusiosa posible
 const usuarioPost = async(req, res = response) => {
 
@@ -144,12 +148,18 @@ const usuarioPost = async(req, res = response) => {
   });
 }
 
-const usuarioDelete = (req, res = response) => {
+// DEV Delete
+const usuarioDelete = async(req, res = response) => {
   // usualmente lo que se manda es un objeto en este caso json
   // res.render('Hello World');
-  res.json({
-    msg: 'delete API - controlador'
-  });
+  const { id } = req.params;
+  // const usuario = await Usuario.findByIdAndDelete(id);
+  const usuario = await Usuario.findByIdAndUpdate(id,{state:false});
+  // res.json({
+  //   msg: 'delete API - controlador',
+  //   id
+  // });
+  res.json(usuario);
 }
 
 const usuarioPatch = (req, res = response) => {

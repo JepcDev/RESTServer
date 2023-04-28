@@ -97,7 +97,12 @@ router.post('/',[
 // });
 
 //DEV DELETE
-router.delete('/', usuarioDelete );
+// vamos a recibir el id como segmento del url
+router.delete('/:id',[
+  check('id', 'No es un ID válido').isMongoId(),
+  check('id').custom(existeUsuarioPorId),
+  validateFields
+], usuarioDelete );
 // router.delete('/', (req, res) => {
 //   // usualmente lo que se manda es un objeto en este caso json
 //   // res.render('Hello World');
